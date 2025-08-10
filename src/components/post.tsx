@@ -1,69 +1,78 @@
+import { useState } from "react";
+import type { PostProps } from "../@types/post-props";
+import { STORAGE_SIGNUP_KEY } from "../constants";
+import { timeAgo } from "../utils/helpers/time-ago";
+import { PostActionButton } from "./post-action-button";
 import { PostDelete } from "./post-delete";
 import { PostEdit } from "./post-edit";
 
-export const Post = () => {
+interface PostItemProps extends PostProps {
+  onDeletePost: (id: number) => void;
+  onEditPost: (postData: PostProps) => void;
+}
+
+export const Post = ({
+  id,
+  title,
+  content,
+  username,
+  created_datetime,
+  onDeletePost,
+  onEditPost,
+}: PostItemProps) => {
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+
+  const loggedUsername = sessionStorage.getItem(STORAGE_SIGNUP_KEY) as string;
+  const isEditable = username === loggedUsername;
+
+  const formattedDate = timeAgo(created_datetime);
+
   return (
     <article>
       <div className="flex justify-between items-center bg-codeleap-brand p-6 rounded-t-2xl">
-        <h2 className="font-bold text-[22px] text-white">
-          My First Post at CodeLeap Network!
-        </h2>
+        <h2 className="font-bold text-[22px] text-white">{title}</h2>
 
-        <div className="flex justify-between items-center gap-6">
-          <button
-            type="button"
-            title="Delete post"
-            className="cursor-pointer border-none bg-transparent"
-          >
-            <img
-              src="/icon-delete.svg"
-              alt=""
-              loading="lazy"
-              className="h-8 w-8"
+        {isEditable && (
+          <div className="flex justify-between items-center gap-6">
+            <PostActionButton
+              buttonType="delete"
+              onClick={() => setIsDeleteModalOpen(true)}
             />
-          </button>
-
-          <button
-            type="button"
-            title="Edit post"
-            className="cursor-pointer border-none bg-transparent"
-          >
-            <img
-              src="/icon-edit.svg"
-              alt=""
-              loading="lazy"
-              className="h-8 w-8"
+            <PostActionButton
+              buttonType="edit"
+              onClick={() => setIsEditModalOpen(true)}
             />
-          </button>
-        </div>
+          </div>
+        )}
       </div>
 
       <div className="border border-container border-t-0  rounded-b-2xl p-6">
         <div className="text-lg text-input flex justify-between items-center mb-4">
-          <span className="font-bold">@Victor</span>
-          <span>25 minutes ago</span>
+          <span className="font-bold">@{username}</span>
+          <span>{formattedDate}</span>
         </div>
 
-        <div className="flex flex-col gap-6 text-lg">
-          <p>
-            Curabitur suscipit suscipit tellus. Phasellus consectetuer
-            vestibulum elit. Pellentesque habitant morbi tristique senectus et
-            netus et malesuada fames ac turpis egestas. Maecenas egestas arcu
-            quis ligula mattis placerat. Duis vel nibh at velit scelerisque
-            suscipit.
-          </p>
-
-          <p>
-            Duis lobortis massa imperdiet quam. Aenean posuere, tortor sed
-            cursus feugiat, nunc augue blandit nunc, eu sollicitudin urna dolor
-            sagittis lacus. Fusce a quam. Nullam vel sem. Nullam cursus lacinia
-            erat.
-          </p>
-        </div>
+        <div
+          className="flex flex-col gap-6 text-lg"
+          dangerouslySetInnerHTML={{ __html: content }}
+        />
       </div>
 
-      <PostDelete />
-      <PostEdit />
+      <PostDelete
+        id={id}
+        isOpen={isDeleteModalOpen}
+        closeModalAction={() => setIsDeleteModalOpen(false)}
+        onDeletePost={onDeletePost}
+      />
+      <PostEdit
+        id={id}
+        title={title}
+        content={content}
+        isOpen={isEditModalOpen}
+        closeModalAction={() => setIsEditModalOpen(false)}
+        onEditPost={onEditPost}
+      />
     </article>
   );
 };

@@ -1,11 +1,5 @@
 import axios from "axios";
-
-interface PostProps {
-  postId: number,
-  username: string,
-  title: string,
-  content: string,
-}
+import type { PostProps } from "../@types/post-props";
 
 const codeleapRepo = axios.create({
   baseURL: 'https://dev.codeleap.co.uk/careers',
@@ -21,18 +15,18 @@ export const listAllPosts = async () => {
   return results;
 }
 
-export const createPost = async ({ username, title, content }: Omit<PostProps, 'postId'>) => {
+export const createPost = async ({ username, title, content }: Omit<PostProps, "id" | "created_datetime">) => {
   const response = await codeleapRepo.post('/', {
     username,
     title,
     content
   });
 
-  return response.status >= 200 && response.status < 300;
+  return response.data as PostProps;
 }
 
-export const updatePost = async ({ postId, title, content }: Omit<PostProps, 'username'>) => {
-  const response = await codeleapRepo.patch(`/${postId}`, {
+export const updatePost = async ({ id, title, content }: Omit<PostProps, "username" | "created_datetime">) => {
+  const response = await codeleapRepo.patch(`/${id}`, {
     title,
     content
   });
@@ -40,7 +34,7 @@ export const updatePost = async ({ postId, title, content }: Omit<PostProps, 'us
   return response.status >= 200 && response.status < 300;
 }
 
-export const deletePost = async ({ postId }: Pick<PostProps, "postId">) => {
-  const response = await codeleapRepo.delete(`/${postId}`);
+export const deletePost = async ({ id }: Pick<PostProps, "id">) => {
+  const response = await codeleapRepo.delete(`/${id}`);
   return response.status >= 200 && response.status < 300;
 }
