@@ -1,14 +1,14 @@
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router";
-import {
-  InputTextField,
-  InputTextLabel,
-  InputTextWrapper,
-} from "../components/input-text";
+import { InputText } from "../components/input-text";
 import { SubmitButton } from "../components/submit-button";
 import { Title } from "../components/title";
 import { STORAGE_SIGNUP_KEY } from "../constants";
 
 export function SignUpPage() {
+  const usernameRef = useRef<HTMLInputElement>(null);
+  const [isSubmitButtonDisabled, setIsSubmitButtonDisabled] = useState(true);
+
   const navigate = useNavigate();
 
   const handleSubmit = (event: React.FormEvent) => {
@@ -24,6 +24,21 @@ export function SignUpPage() {
     navigate("/");
   };
 
+  useEffect(() => {
+    const usernameInput = usernameRef.current;
+    if (usernameInput) {
+      usernameInput.addEventListener("input", () => {
+        setIsSubmitButtonDisabled(usernameInput.value.trim() === "");
+      });
+    }
+
+    return () => {
+      if (usernameInput) {
+        usernameInput.removeEventListener("input", () => {});
+      }
+    };
+  }, []);
+
   return (
     <div className="flex justify-center items-center h-screen">
       <form
@@ -32,20 +47,19 @@ export function SignUpPage() {
       >
         <Title>Welcome to CodeLeap network!</Title>
 
-        <InputTextWrapper>
-          <InputTextLabel htmlFor="username">
-            Please enter your username
-          </InputTextLabel>
-          <InputTextField
-            name="username"
-            id="username"
-            placeholder="John doe"
-            required
-          />
-        </InputTextWrapper>
+        <InputText
+          ref={usernameRef}
+          label="Please enter your username"
+          name="username"
+          id="username"
+          placeholder="John Doe"
+          required
+        />
 
         <div className="text-right">
-          <SubmitButton>Enter</SubmitButton>
+          <SubmitButton disabled={isSubmitButtonDisabled}>
+            <span className="uppercase">Enter</span>
+          </SubmitButton>
         </div>
       </form>
     </div>
