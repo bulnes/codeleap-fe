@@ -5,7 +5,7 @@ import { Title } from "./title";
 
 export const Form = () => {
   return (
-    <form className="p-6 rounded-2xl border border-container-border">
+    <form className="p-6 rounded-2xl border border-container">
       <Title>What's on your mind?</Title>
 
       <InputText

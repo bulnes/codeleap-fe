@@ -14,7 +14,7 @@ export const InputTextArea = forwardRef<
       <textarea
         {...rest}
         ref={ref}
-        className="w-full border border-input-border rounded-lg py-2 px-3 h-20 resize-none"
+        className="w-full border border-input rounded-lg py-2 px-3 h-20 resize-none"
       />
     </label>
   );

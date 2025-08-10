@@ -13,7 +13,7 @@ export const InputText = forwardRef<HTMLInputElement, InputTextProps>(
           {...rest}
           type="text"
           ref={ref}
-          className="w-full border border-input-border rounded-lg py-2 px-3 h-8"
+          className="w-full border border-input rounded-lg py-2 px-3 h-8"
         />
       </label>
     );
