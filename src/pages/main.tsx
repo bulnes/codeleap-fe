@@ -1,7 +1,7 @@
 import { Form } from "../components/form";
 import { Post } from "../components/post";
 
-export function MainPage() {
+export const MainPage = () => {
   return (
     <section className="bg-white w-full max-w-[800px] min-h-screen">
       <div className="bg-codeleap-brand py-7 px-8">
@@ -17,4 +17,4 @@ export function MainPage() {
       </main>
     </section>
   );
-}
+};

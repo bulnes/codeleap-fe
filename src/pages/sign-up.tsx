@@ -5,7 +5,7 @@ import { SubmitButton } from "../components/submit-button";
 import { Title } from "../components/title";
 import { STORAGE_SIGNUP_KEY } from "../constants";
 
-export function SignUpPage() {
+export const SignUpPage = () => {
   const usernameRef = useRef<HTMLInputElement>(null);
   const [isSubmitButtonDisabled, setIsSubmitButtonDisabled] = useState(true);
 
@@ -64,4 +64,4 @@ export function SignUpPage() {
       </form>
     </div>
   );
-}
+};

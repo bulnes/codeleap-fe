@@ -1,4 +1,4 @@
-export function Post() {
+export const Post = () => {
   return (
     <article>
       <div className="flex justify-between items-center bg-codeleap-brand p-6 rounded-t-2xl">
@@ -60,4 +60,4 @@ export function Post() {
       </div>
     </article>
   );
-}
+};
