@@ -1,3 +1,6 @@
+import { PostDelete } from "./post-delete";
+import { PostEdit } from "./post-edit";
+
 export const Post = () => {
   return (
     <article>
@@ -58,6 +61,9 @@ export const Post = () => {
           </p>
         </div>
       </div>
+
+      <PostDelete />
+      <PostEdit />
     </article>
   );
 };
