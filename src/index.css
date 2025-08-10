@@ -3,4 +3,7 @@
 
 @theme {
   --font-roboto: "Roboto", sans-serif;
+  --color-codeleap-brand: #7695ec;
+  --color-input-border: #777;
+  --color-container-border: #999999;
 }
